@@ -1,8 +1,16 @@
-# React + Vite
+# Todo List (React version)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+리액트 버전으로 만든 투두리스트다.
 
-Currently, two official plugins are available:
+## 기능 명세서
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. 수정/추가/삭제 기능
+2. 날짜별로 투두 리스트 보여주기
+3. 달력 하드코딩.
+4. 완료 항목 리스트 가장 아래로 보내기
+5. 15분전/1시간전/하루전 리마인드 알림
+6. 우선순위 마크 체크
+7. 리스트에서 항목 위아래로 자유롭게 왔다갔다 할수 있게 하기.
+8. 추가 컴퍼넌트에서
+    1. 날짜/시간 설정 선택
+    2. 리마인드 옵션 선택
