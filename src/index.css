@@ -112,6 +112,7 @@ li {
 
 .todo_list li {
     position: relative;
+    margin-bottom: 10px;
 }
 .todo_item {
     position: relative;
