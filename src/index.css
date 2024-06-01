@@ -124,6 +124,7 @@ li {
     border-radius: 4px;
     box-shadow: 0 2px 5px 0 #e8e7ff;
     z-index: 1;
+    transition: transform 0.3s ease;
 }
 .todo_item.side {
     transform: translateX(-80px);
@@ -304,7 +305,7 @@ li {
     padding: 15px 0;
 }
 .todo_add_area .todo_setting + .todo_setting {
-    border-top: 1px solid #b4b4c6;
+    border-top: 1px solid #ccc;
 }
 .todo_add_area .todo_setting .subject {
     font-size: 14px;

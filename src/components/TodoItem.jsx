@@ -6,10 +6,24 @@ import {
     faPen,
     faEllipsisVertical,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useContext } from "react";
+import { todoDispatchContext } from "../App";
+import { onClickSlide } from "../utils/onClickSlide";
 
 const TodoItem = ({ id, title, done, date, priority, remind }) => {
-    const [checkDone, onCheckDone] = useState(done);
+    const { delTodo, checkTodo, editMode } = useContext(todoDispatchContext);
+    const onClickDelete = () => {
+        delTodo(id);
+    };
+
+    const onChangeCheck = () => {
+        checkTodo(id);
+    };
+
+    const onClickEdit = (e) => {
+        editMode(id);
+        onClickSlide(e);
+    };
 
     return (
         <li>
@@ -19,10 +33,8 @@ const TodoItem = ({ id, title, done, date, priority, remind }) => {
                         type="checkbox"
                         name=""
                         id={`todo-check-${id}`}
-                        checked={checkDone}
-                        onChange={(e) => {
-                            onCheckDone(e.target.checked);
-                        }}
+                        checked={done}
+                        onChange={onChangeCheck}
                     />
                     <label htmlFor={`todo-check-${id}`}>
                         <span className="check_icon">
@@ -30,25 +42,29 @@ const TodoItem = ({ id, title, done, date, priority, remind }) => {
                         </span>
                         <span className="todo_text">
                             <strong className="todo_title">{title}</strong>
-                            <span className="todo_time">8:00 PM</span>
+                            {date && <span className="todo_time">8:00 PM</span>}
                         </span>
                     </label>
                 </div>
                 <div className="todo_util">
-                    {priority && <span className="priority urgent"></span>}
-                    <span className="remind">
-                        <FontAwesomeIcon icon={faBell} />
-                    </span>
-                    <button className="more_util">
+                    {priority && (
+                        <span className={`priority ${priority}`}></span>
+                    )}
+                    {remind && (
+                        <span className="remind">
+                            <FontAwesomeIcon icon={faBell} />
+                        </span>
+                    )}
+                    <button className="more_util" onClick={onClickSlide}>
                         <FontAwesomeIcon icon={faEllipsisVertical} />
                     </button>
                 </div>
             </div>
             <div className="todo_modify">
-                <button className="todo_edit">
+                <button className="todo_edit" onClick={onClickEdit}>
                     <FontAwesomeIcon icon={faPen} />
                 </button>
-                <button className="todo_del">
+                <button className="todo_del" onClick={onClickDelete}>
                     <FontAwesomeIcon icon={faTrash} />
                 </button>
             </div>
