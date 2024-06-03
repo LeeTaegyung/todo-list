@@ -3,7 +3,7 @@ import { todoStateContext } from "../App";
 import TodoItem from "./TodoItem";
 
 const TodoList = () => {
-    const todoList = useContext(todoStateContext);
+    const { todoList } = useContext(todoStateContext);
     return (
         <div className="todo_list_area">
             <ul className="todo_list">

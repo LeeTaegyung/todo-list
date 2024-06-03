@@ -10,14 +10,18 @@ const mockData = [
         title: "빨래하기",
         done: false,
         date: new Date().getTime(), // timeStamp
+        hours: 5,
+        minute: "00",
         priority: false, // 우선순위
-        remind: false, // 알림
+        remind: "24h", // 알림
     },
     {
         id: 2,
         title: "청소하기",
         done: false,
         date: new Date().getTime(), // timeStamp
+        hours: "",
+        minute: "",
         priority: false, // 우선순위
         remind: false, // 알림
     },
@@ -26,6 +30,8 @@ const mockData = [
         title: "최강야구 보기",
         done: false,
         date: new Date().getTime(), // timeStamp
+        hours: 5,
+        minute: "00",
         priority: false, // 우선순위
         remind: false, // 알림
     },
@@ -63,6 +69,9 @@ function App() {
     const refTodoInput = useRef();
     const [todoList, dispatch] = useReducer(reducer, []);
     const [editTarget, setEditTarget] = useState(null);
+    const [currentDate, setCurrentDate] = useState(
+        new Date().setHours(0, 0, 0, 0)
+    );
 
     useEffect(() => {
         dispatch({
@@ -80,8 +89,10 @@ function App() {
                 title: data.title,
                 done: false,
                 date: data.date, // timeStamp
-                priority: data.priority, // 우선순위
+                hours: data.hours, // 시
+                minute: data.minute, // 분
                 remind: data.remind, // 알림
+                priority: data.priority, // 우선순위
             },
         });
     };
@@ -117,10 +128,14 @@ function App() {
         refTodoInput.current.focus();
     };
 
+    const onClickDate = (timeStamp) => {
+        setCurrentDate(timeStamp);
+    };
+
     return (
         <div id="wrap">
             <Header />
-            <todoStateContext.Provider value={todoList}>
+            <todoStateContext.Provider value={{ todoList, currentDate }}>
                 <todoDispatchContext.Provider
                     value={{
                         createTodo,
@@ -130,6 +145,7 @@ function App() {
                         editMode,
                         editTarget,
                         refTodoInput,
+                        onClickDate,
                     }}
                 >
                     <main className="main">

@@ -97,6 +97,12 @@ li {
     display: block;
     font-size: 11px;
 }
+.date_list_area .date_item.sat .day_txt {
+    color: blue;
+}
+.date_list_area .date_item.sun .day_txt {
+    color: red;
+}
 .date_list_area .date_item .day_num {
     display: block;
     margin-top: 5px;
@@ -311,6 +317,37 @@ li {
     font-size: 14px;
     color: #888;
 }
+.todo_add_area .date_setting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.todo_add_area .date_setting input {
+    display: block;
+    position: relative;
+    border: 1px solid #aaa;
+    padding: 5px;
+    font-size: 13px;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+    color: #111;
+    border-radius: 4px;
+}
+.todo_add_area
+    .date_setting
+    input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background-position: right 2px center;
+    background-size: 16px;
+    color: transparent;
+    cursor: pointer;
+}
 .todo_add_area .time_setting {
     display: flex;
     align-items: center;
@@ -346,7 +383,7 @@ li {
     left: 16px;
 }
 .todo_add_area .time_setting .time_box {
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
@@ -355,16 +392,13 @@ li {
     flex: 0 0 auto;
     text-align: center;
 }
-.todo_add_area .time_setting .time_box.show {
-    display: flex;
-}
 .todo_add_area .time_setting .time_box input {
     display: block;
     border: 1px solid #aaa;
     width: 30px;
     font-weight: 400;
     text-align: center;
-    border-radius: 5px;
+    border-radius: 4px;
 }
 .todo_add_area .time_setting .time_box input::placeholder {
     color: #aaa;

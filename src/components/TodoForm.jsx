@@ -4,6 +4,7 @@ import {
     faPenToSquare,
     faCircleInfo,
     faClock,
+    faCalendarDays,
 } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useEffect, useRef, useState } from "react";
 import { todoDispatchContext } from "../App";
@@ -46,14 +47,20 @@ const TodoForm = () => {
         todoDispatchContext
     );
     const [todoInput, setTodoInput] = useState("");
+    const [todoDate, setTodoDate] = useState("");
+    const [todoHours, setTodoHours] = useState("");
+    const [todoMinute, setTodoMinute] = useState("");
     const [todoSetting, setTodoSetting] = useState({
         priority: false,
         remind: false,
     });
+    const [todoTimeSetting, setTodoTimeSetting] = useState(false);
 
     useEffect(() => {
         if (editTarget) {
             setTodoInput(editTarget.title);
+            setTodoHours(editTarget.todoHours);
+            setTodoMinute(editTarget.todoMinute);
             setTodoSetting({
                 priority: editTarget.priority,
                 remind: editTarget.remind,
@@ -84,10 +91,12 @@ const TodoForm = () => {
             return;
         }
         createTodo({
-            title: todoInput,
-            date: new Date().getTime(),
-            priority: todoSetting.priority, // 우선순위
+            title: todoInput, // 내용
+            date: new Date(todoDate).getTime(), // 날짜
+            hours: todoHours, // 시
+            minute: todoMinute, // 분
             remind: todoSetting.remind, // 알림
+            priority: todoSetting.priority, // 우선순위
         });
         // 팝업닫기
         popClose();
@@ -96,13 +105,24 @@ const TodoForm = () => {
     const onClickUpdate = () => {
         updateTodo({
             id: editTarget.id,
-            title: todoInput,
+            title: todoInput, // 내용
             done: editTarget.done,
-            date: new Date().getTime(),
-            priority: todoSetting.priority, // 우선순위
+            date: todoDate, // 날짜
+            hours: todoHours, // 시
+            minute: todoMinute, // 분
             remind: todoSetting.remind, // 알림
+            priority: todoSetting.priority, // 우선순위
         });
         popClose();
+    };
+
+    const onClickTimeToggle = (e) => {
+        e.target.classList.toggle("on");
+        if (todoTimeSetting) {
+            setTodoHours("");
+            setTodoMinute("");
+        }
+        setTodoTimeSetting(!todoTimeSetting);
     };
 
     // 투두 세팅
@@ -141,6 +161,19 @@ const TodoForm = () => {
                             setTodoInput(e.target.value);
                         }}
                     />
+                    {/* date */}
+                    <div className="todo_setting date_setting">
+                        <span className="subject">
+                            <FontAwesomeIcon icon={faCalendarDays} /> Date
+                        </span>
+                        <input
+                            type="date"
+                            value={todoDate}
+                            onChange={(e) => {
+                                setTodoDate(e.target.value);
+                            }}
+                        />
+                    </div>
                     {/* time */}
                     <div className="todo_setting time_setting">
                         <span className="subject">
@@ -148,56 +181,65 @@ const TodoForm = () => {
                         </span>
                         <button
                             className="time_toggle"
-                            onClick={(e) => {
-                                e.target.classList.toggle("on");
-                                document
-                                    .querySelector(".time_box")
-                                    .classList.toggle("show");
-                            }}
+                            onClick={onClickTimeToggle}
                         ></button>
-                        <div className="time_box">
-                            <input
-                                type="tel"
-                                name=""
-                                id=""
-                                className="hour"
-                                placeholder="00"
-                            />
-                            <span>:</span>
-                            <input
-                                type="tel"
-                                name=""
-                                id=""
-                                className="minute"
-                                placeholder="00"
-                            />
-                        </div>{" "}
+                        {todoTimeSetting && (
+                            <div className="time_box">
+                                <input
+                                    type="tel"
+                                    name=""
+                                    id=""
+                                    value={todoHours}
+                                    className="hour"
+                                    placeholder="00"
+                                    maxLength="2"
+                                    onChange={(e) => {
+                                        setTodoHours(e.target.value);
+                                    }}
+                                />
+                                <span>:</span>
+                                <input
+                                    type="tel"
+                                    name=""
+                                    id=""
+                                    value={todoMinute}
+                                    className="minute"
+                                    placeholder="00"
+                                    maxLength="2"
+                                    onChange={(e) => {
+                                        setTodoMinute(e.target.value);
+                                    }}
+                                />
+                            </div>
+                        )}
                     </div>
                     {/* remind */}
-                    <div className="todo_setting">
-                        <span className="subject">
-                            <FontAwesomeIcon icon={faBell} /> Remind me
-                        </span>
-                        <ul className="remind_list" onClick={settingClick}>
-                            {remindList.map((remindItem) => {
-                                return (
-                                    <li key={remindItem.id}>
-                                        <button
-                                            className={`remind_btn ${
-                                                todoSetting.remind ===
-                                                remindItem.data
-                                                    ? "on"
-                                                    : null
-                                            }`}
-                                            data-remind={remindItem.data}
-                                        >
-                                            {remindItem.text}
-                                        </button>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </div>
+                    {todoTimeSetting && (
+                        <div className="todo_setting">
+                            <span className="subject">
+                                <FontAwesomeIcon icon={faBell} /> Remind me
+                            </span>
+                            <ul className="remind_list" onClick={settingClick}>
+                                {remindList.map((remindItem) => {
+                                    return (
+                                        <li key={remindItem.id}>
+                                            <button
+                                                className={`remind_btn ${
+                                                    todoSetting.remind ===
+                                                    remindItem.data
+                                                        ? "on"
+                                                        : null
+                                                }`}
+                                                data-remind={remindItem.data}
+                                            >
+                                                {remindItem.text}
+                                            </button>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                    )}
                     {/* priority */}
                     <div className="todo_setting priority_setting">
                         <span className="subject">

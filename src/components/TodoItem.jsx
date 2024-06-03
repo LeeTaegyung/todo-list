@@ -10,7 +10,16 @@ import { useContext } from "react";
 import { todoDispatchContext } from "../App";
 import { onClickSlide } from "../utils/onClickSlide";
 
-const TodoItem = ({ id, title, done, date, priority, remind }) => {
+const TodoItem = ({
+    id,
+    title,
+    done,
+    date,
+    hours,
+    minute,
+    priority,
+    remind,
+}) => {
     const { delTodo, checkTodo, editMode } = useContext(todoDispatchContext);
     const onClickDelete = () => {
         delTodo(id);
@@ -42,7 +51,11 @@ const TodoItem = ({ id, title, done, date, priority, remind }) => {
                         </span>
                         <span className="todo_text">
                             <strong className="todo_title">{title}</strong>
-                            {date && <span className="todo_time">8:00 PM</span>}
+                            {hours && (
+                                <span className="todo_time">
+                                    {hours}:{minute}
+                                </span>
+                            )}
                         </span>
                     </label>
                 </div>
